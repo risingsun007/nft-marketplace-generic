@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-export const useARStatus = (data) => {
+export const useARStatus = (data: any) => {
   const [isSupport, SetSupport] = useState(false);
   //const [data,setData] = useState(null);
 
-  const update = (result) => {
+  const update = (result: any) => {
     SetSupport(result);
   }
 

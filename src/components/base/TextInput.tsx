@@ -4,7 +4,16 @@ import '../../styles/base/TextInput.css';
 //Base Input Component
 //Usage: <Input width='550px' height='30px' />
 
-const TextInput = ({width,height, placeholder='default input', icon,type}) => {
+interface TextInputProps {
+  placeholder: string;
+  icon: JSX.Element,
+  type?: React.HTMLInputTypeAttribute | undefined;
+  width?: string;
+  height?: string;
+}
+
+
+const TextInput = ({width,height, placeholder='default input', icon,type}: TextInputProps) => {
   return (
     <div className="search-wrapper">
       <div

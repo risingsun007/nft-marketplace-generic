@@ -1,4 +1,4 @@
-import react, { useEffect } from "react";
+import React, { useEffect } from "react";
 import Accordion from "../components/base/Accordion";
 import AccordionHeader from "../components/base/AccordionHeader";
 import Button from "../components/base/Button";
@@ -7,7 +7,7 @@ import Checkbox from "../components/base/Checkbox";
 import Image from "../components/base/Image";
 import Select from "../components/base/Select";
 import TextInput from "../components/base/TextInput";
-import { Colors } from "../constants/Colors";
+import  Colors  from "../constants/Colors.json";
 import {AiOutlineSearch} from 'react-icons/ai';
 import Header from "../components/Header";
 import { useEthers, useEtherBalance } from "@usedapp/core";

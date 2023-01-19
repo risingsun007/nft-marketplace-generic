@@ -1,21 +1,31 @@
-import React, { useState, useRef, forwardRef,useEffect } from "react";
-import Card from "./Card";
+import React, { useState, useRef, forwardRef, useEffect } from "react";
+import Card, { cardProps } from "./Card";
 import AccordionHeader from "./AccordionHeader";
 
-const Accordion = ({child }) => {
-  const [isOpen, setOpen] = useState(false);
-  const accordionRef = useRef();
 
-  useEffect(() => accordionRef.current.style.minHeight = '50px',[]);
+const Accordion = ({ child }: { child: any }): JSX.Element => {
+  const [isOpen, setOpen] = useState(false);
+  const accordionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (accordionRef.current) {
+      accordionRef.current.style.minHeight = '50px'
+    }
+  }
+    , []);
 
   const open = () => {
     if (!isOpen) {
       setOpen(!isOpen);
       console.log(child);
-      accordionRef.current.style.height = "auto";
+      if (accordionRef.current) {
+        accordionRef.current.style.height = "auto";
+      }
     } else {
       setOpen(!isOpen);
-      accordionRef.current.style.height = "50px";
+      if (accordionRef.current) {
+        accordionRef.current.style.height = "50px";
+      }
     }
   }
 

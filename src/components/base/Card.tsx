@@ -1,5 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, RefObject } from "react";
 import "../../styles/base/Card.css";
+
+export interface cardProps {
+  child: any;
+  onClick?: () => void;
+  blurColor?: string;
+  width?: string;
+  height?: string;
+}
 
 const Card = React.forwardRef(
   (
@@ -9,8 +17,8 @@ const Card = React.forwardRef(
       child,
       blurColor = "rgba(48,118,234,0.2)",
       onClick,
-    },
-    ref
+    }: cardProps,
+    ref: React.ForwardedRef<HTMLDivElement>
   ) => (
     <div
       className="card"

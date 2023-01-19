@@ -3,7 +3,7 @@ import "../styles/Hero.css";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 
-const Hero = () => {
+const Hero = (): JSX.Element => {
   let navigate = useNavigate();
 
   const goExplore = () => {

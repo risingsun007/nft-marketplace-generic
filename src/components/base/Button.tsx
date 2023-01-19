@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 import "../../styles/base/Button.css";
 
+interface ButtonProps{
+  textContent: string,
+  onClick: () => void,
+  width?: string,
+  height?: string,
+  color?: string,
+  textColor?: string,
+  child?: JSX.Element
+}
+
 const Button = ({
   width = "80px",
   height = "30px",
@@ -9,7 +19,7 @@ const Button = ({
   textColor = "black",
   textContent = 'Button',
   child
-}) => {
+}: ButtonProps) => {
   const [isHover, setHover] = useState(false);
 
   return (

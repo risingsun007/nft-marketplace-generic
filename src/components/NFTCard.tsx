@@ -1,21 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../styles/NFTCard.css";
 import { FaEthereum } from "react-icons/fa";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { ColorExtractor } from 'react-color-extractor'
 import Card from "./base/Card";
 import Button from "./base/Button";
-import { Colors } from "../constants/Colors";
+import  Colors from "../constants/Colors.json";
 
 
-import { ModelViewerElement } from "@google/model-viewer";
-import { useARStatus } from "../hooks/isARStatus";
+import { useARStatus } from "../hooks/isARStatus"
+    
+interface NFTCardProps {
+  username: string,
+  nftName: string,
+  price: number,
+  nftSrc: string,
+  likeCount: number,
+  gradient: number,
+  onClick: () => void,
+}
 
-
-
-const NFTCard = ({ username, nftName, price, nftSrc, likeCount, gradient, onClick }) => {
+const NFTCard = ({ username, nftName, price, nftSrc, likeCount, gradient, onClick }: NFTCardProps): JSX.Element => {
   const [isLike, setIsLike] = useState(false);
-  const [colors, setColors] = useState([]);
+  const [colors, setColors] = useState<any>([]);
+  const nftCardRef = useRef<HTMLDivElement>(null);
 
   const isARSupport = useARStatus(nftSrc);
 
@@ -25,23 +32,18 @@ const NFTCard = ({ username, nftName, price, nftSrc, likeCount, gradient, onClic
 
   const like = () => setIsLike(!isLike);
 
-  const getColors = colors => {
-    setColors(c => [...c, ...colors]);
-    //console.log(colors);
+  const getColors = (colors: any) => {
+    setColors([...colors]);
   }
-
-
-
-
 
   return (
     <Card
       blurColor={colors[0]}
 
       child={<>
-        {isARSupport ? <model-viewer ar-scale="auto" ar ar-modes="webxr scene-viewer quick-look" id="reveal" loading="eager" camera-controls auto-rotate src={nftSrc} > </model-viewer> : <><ColorExtractor getColors={getColors}>
-          <img className="nft-image" src={nftSrc} />
-        </ColorExtractor></>}
+        {
+          <img className="nft-image" src={nftSrc} alt="" />
+        }
         <div className="wrapper">
           <div className="info-container">
             <p className="owner"> LEJOURN.DARK.NFT</p>
@@ -76,9 +78,9 @@ const NFTCard = ({ username, nftName, price, nftSrc, likeCount, gradient, onClic
             <p className="like-count">123</p>
           </div>
         </div>
-      </>}>
-
-    </Card>
+      </>}
+      ref= {nftCardRef}
+      />
   );
 };
 
