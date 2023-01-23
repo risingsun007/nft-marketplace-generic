@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "../../styles/base/Button.css";
 
 interface ButtonProps{
-  textContent: string,
-  onClick: () => void,
+  textContent?: string,
+  onClick?: () => void,
   width?: string,
   height?: string,
   color?: string,

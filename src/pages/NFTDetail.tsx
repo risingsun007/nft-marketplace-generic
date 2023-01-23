@@ -4,46 +4,54 @@ import { useNavigate } from "react-router-dom";
 import { useLocation, Navigate } from "react-router";
 import Card from "../components/base/Card";
 import "../styles/NFTDetail.css";
-import { ColorExtractor } from "react-color-extractor";
 import Button from "../components/base/Button";
 import { FaEthereum } from "react-icons/fa";
 import { AiOutlineHeart, AiFillHeart, AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { useMobile } from "../hooks/isMobile";
-import { hotDropsData } from "../constants/MockupData";
-import NFTCard from "../components/NFTCard";
 import { useARStatus } from "../hooks/isARStatus";
-
-
+import useNft from "../hooks/useNft";
+import { useWeb3React } from '@web3-react/core'
+import { Web3Provider } from '@ethersproject/providers'
+import { wallet } from '../api/EvmConnector'
 
 const NFTDetail = () => {
+  let { account, library} = useWeb3React<Web3Provider>()
+  const web3ReactHook = useWeb3React<Web3Provider>();
+  const active = web3ReactHook.active;
   const isMobile = useMobile();
 
-  const [colors, setColors] = useState([]);
+  const [colors, setColors] = useState<string[]>([]);
 
   const [isLike, setIsLike] = useState(false);
   
-  
-
   const like = () => setIsLike(!isLike);
 
-  const getColors = (colors) => {
-    setColors((c) => [...c, ...colors]);
+  const getColors = (colors: string[]) => {
+    setColors((c: string[]) => [...c, ...colors]);
   };
 
   const navigate = useNavigate();
 
-  const { state } = useLocation();
+  // TODO figure out how to deal with unknow type is safe way
+  const { state } = useLocation() as any;
 
   useEffect(() => {
     setColors([]);
   }, [state]);
 
   const isARSupport = useARStatus(state.item.src);
+  const nftInfo = useNft();
 
-  
+  const doMint = async () =>  {
+   if(nftInfo && nftInfo.doMint){
+      await nftInfo.doMint(state.index, web3ReactHook);
+   } else {
+   }
+  }
 
-  //!! aciklama karakter sayisi sinirlanmali.
-  //!! scroll sorununa cozum bulunmali.
+  const connect = async () =>  {
+    await wallet.connect(web3ReactHook)
+   }
 
   return (
     <div>
@@ -56,11 +64,6 @@ const NFTDetail = () => {
           child={
             //Detail Content
             <div id="detail-content">
-             {isARSupport ? <model-viewer ar-scale="auto" ar ar-modes="webxr scene-viewer quick-look" id="arDetail" loading="eager" camera-controls auto-rotate src={state.item.src} > </model-viewer> 
-             : <> <ColorExtractor getColors={getColors}>
-                <img id="detail-image" src={state.item.src} />
-              </ColorExtractor></>}
-
               <div id="detail-info" style={{}}>
                 <div id='detail-info-container'>
                   <p id="collection"> {state.item.name} </p>
@@ -73,10 +76,11 @@ const NFTDetail = () => {
                   <Button
                     width={isMobile ? "70%" : "70%"}
                     height="50px"
+                    onClick={active ? doMint : connect}
                     child={
                       <div id="button-child">
                         <FaEthereum size="28px" />
-                        <p id="price">1254</p>
+                        <p id="price">{active ? nftInfo?.nftCost || -99 : "Connect"}</p>
                       </div>
                     }
                   ></Button>

@@ -54,7 +54,7 @@ const NFTCard = ({ username, nftName, price, nftSrc, likeCount, gradient, onClic
             <p className="price-label">Price</p>
             <p className="price">
               {" "}
-              <FaEthereum /> 4.555
+              <FaEthereum /> {price}
             </p>
           </div>
         </div>
