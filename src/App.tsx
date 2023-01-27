@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Create from "./pages/Create";
 import Explore from "./pages/Explore";
 import AppProvider from "./context/"
+import Header from "./components/Header"
 
 
 
@@ -24,6 +25,7 @@ function App() {
         </Routes>
       </BrowserRouter >
     </AppProvider>
+
   );
 }
 

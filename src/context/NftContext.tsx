@@ -19,13 +19,14 @@ interface WindowEthereum {
 };
 
 const NftContext = React.createContext<Nft | null>(null);
+const intialMintFunc = () => (async (id: number): Promise<any> => { console.log("do mint initial") });
 
 export function NftProvider<React>({ children }: any) {
-  let [doMint, setDoMint] = useState<((id: number) => Promise<void>)>(() => (async (id: number): Promise<void> => { console.log("do mint initial") }));
+  let [doMint, setDoMint] = useState<((id: number) => Promise<any>)>(intialMintFunc);
   let [getTokenBalances, setGetTokenBalances] = useState<((id: number) => Promise<number[]>) | null>(null);
   let { active, account, library, activate } = useWeb3React<Web3Provider>()
 
-  const mintFunc = useCallback(async (id: number, web3ReactHook: any): Promise<void> => { 
+  const mintFunc = useCallback(async (id: number, web3ReactHook: any): Promise<any> => { 
     if (!web3ReactHook.active) {
       await web3ReactHook.activate(injectedConnector)
     }
@@ -37,9 +38,10 @@ export function NftProvider<React>({ children }: any) {
         method: 'wallet_switchEthereumChain',
         params: [{ "chainId": "0x5" }]
       });
-
-    const returnVal = await contract.functions.mint(id, 1, { value: parseEther(String(nftCost)) });
-
+    
+    const result1 = await contract.functions.mint(id, 1, { value: parseEther(String(nftCost)) });
+    console.log(`mintFunc result1: ${result1}`)
+    return result1;
   }, [])
 
   useEffect(() => {

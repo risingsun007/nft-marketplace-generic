@@ -19,6 +19,7 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "react-slick": "^0.28.1",
+    "styled-components": "^5.3.6",
     "web-vitals": "^2.1.2",
     "web3": "^1.8.1",
     "web3-react": "^5.0.5"
@@ -49,6 +50,7 @@
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
+    "@types/styled-components": "^5.1.26",
     "typescript": "^4.9.4"
   }
 }

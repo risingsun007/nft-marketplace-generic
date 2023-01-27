@@ -9,9 +9,8 @@ import Header from "../components/Header";
 const Home = () => {
   return (
     <div id="home">
-      <Header/>
+      <Header />
       <Hero />
-
       <p id="card-list-header-text"> Hot Drops </p>
       <div id="list-container">
         <CardList list={hotDropsData}  />

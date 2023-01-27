@@ -13,22 +13,65 @@ import useNft from "../hooks/useNft";
 import { useWeb3React } from '@web3-react/core'
 import { Web3Provider } from '@ethersproject/providers'
 import { wallet } from '../api/EvmConnector'
+import Modal from '../components/base/modal'
+import { inspect } from 'util'
+import styled from "styled-components";
+
+const Spinner = styled.div`
+  border: 16px solid white;
+  border-top: 16px blue solid;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  animation: spin 2s linear infinite;
+  /* 
+  border: 16px solid #f3f3f3; 
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite; */
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
 
 const NFTDetail = () => {
-  let { account, library} = useWeb3React<Web3Provider>()
+  let { account, library } = useWeb3React<Web3Provider>()
   const web3ReactHook = useWeb3React<Web3Provider>();
   const active = web3ReactHook.active;
   const isMobile = useMobile();
 
   const [colors, setColors] = useState<string[]>([]);
-
   const [isLike, setIsLike] = useState(false);
-  
+  const [showModal, doShowModal] = useState<boolean>(false);
+  const [mintSuccess, setMintSuccess] = useState<boolean>(false);
+  const [waitingForMint, setWaitingForMint] = useState<boolean>(false);
+
+  interface WindowEthereum {
+    ethereum: any;
+  };
+
+  const windowEthereum = window as unknown as WindowEthereum;
+
   const like = () => setIsLike(!isLike);
 
   const getColors = (colors: string[]) => {
     setColors((c: string[]) => [...c, ...colors]);
   };
+
+  const resetValues = () => {
+    setMintSuccess(false)
+    setWaitingForMint(false)
+  }
 
   const navigate = useNavigate();
 
@@ -42,27 +85,64 @@ const NFTDetail = () => {
   const isARSupport = useARStatus(state.item.src);
   const nftInfo = useNft();
 
-  const doMint = async () =>  {
-   if(nftInfo && nftInfo.doMint){
-      await nftInfo.doMint(state.index, web3ReactHook);
-   } else {
-   }
+  const doMint = async () => {
+    try {
+      if (nftInfo && nftInfo.doMint) {
+        setWaitingForMint(true);
+        await (nftInfo.doMint(state.index, web3ReactHook));
+        setMintSuccess(true)
+        setWaitingForMint(false)
+      }
+      else {
+        console.log("NFT context not set up yet");
+
+      }
+    } catch (e) {
+      setMintSuccess(false);
+      setWaitingForMint(false);
+    }
   }
 
-  const connect = async () =>  {
+  const connect = async () => {
     await wallet.connect(web3ReactHook)
-   }
+  }
+
+  const modalCloseHandler = () => {
+    doShowModal(false);
+    resetValues();
+  }
 
   return (
     <div>
       <Header />
+
       <div id="nft-detail-card-wrapper">
+        <Modal show={showModal} doShow={modalCloseHandler}>
+          {mintSuccess ?
+            <div> Mint Success!!!!!</div>
+            :
+            waitingForMint ?
+              <div> <Spinner /> </div>
+              :
+              <Button
+                width={isMobile ? "70%" : "70%"}
+                height="50px"
+                onClick={() => active ? doMint() : connect()}
+                child={
+                  <div id="button-child">
+                    <FaEthereum size="28px" />
+                    <p id="price">{active ? "Buy for " + nftInfo?.nftCost || -99 : "Connect"}</p>
+                  </div>
+                }></Button>
+          }
+        </Modal>
         <Card
           width={isMobile ? "100%" : "65vw"}
           height={isMobile ? "700px" : "60vh"}
           blurColor={colors[0]}
           child={
             //Detail Content
+
             <div id="detail-content">
               <div id="detail-info" style={{}}>
                 <div id='detail-info-container'>
@@ -72,11 +152,12 @@ const NFTDetail = () => {
 
                 </div>
 
+
                 <div id="detail-controls">
                   <Button
                     width={isMobile ? "70%" : "70%"}
                     height="50px"
-                    onClick={active ? doMint : connect}
+                    onClick={() => { active ? doShowModal(true) : connect() }}
                     child={
                       <div id="button-child">
                         <FaEthereum size="28px" />
@@ -106,10 +187,11 @@ const NFTDetail = () => {
                   </div>
                 </div>
               </div>
+
             </div>
           }
         />
-        
+
       </div>
 
     </div>

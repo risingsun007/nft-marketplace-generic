@@ -1,5 +1,5 @@
 interface Nft {
-  doMint: ((id: number, web3ReactHook: any) => Promise<void>)
+  doMint: ((id: number, web3ReactHook: any) => Promise<any>)
   getTokenBalances: ((numTokens: number) => Promise<number[]>) | null
   nftCost: number;
 };
