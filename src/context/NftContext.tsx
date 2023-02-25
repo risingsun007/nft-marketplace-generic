@@ -36,7 +36,7 @@ export function NftProvider<React>({ children }: any) {
     console.log('enter mintFunc part2')
     const windowEthereum = window as unknown as WindowEthereum;
     const contract = new Contract(process.env.REACT_APP_CONTRACT_ADDRESS as any, abi as any, signer);
-    console.log(`${windowEthereum.ethereum.network}`)
+    console.log(`network: ${windowEthereum.ethereum.network}`)
     if (windowEthereum?.ethereum?.network && windowEthereum.ethereum.network !== "0x5"){
       console.log("try to switch wallet");
       await windowEthereum.ethereum.request({
@@ -44,7 +44,7 @@ export function NftProvider<React>({ children }: any) {
         params: [{ "chainId": "0x5" }]
       });
     }
-    console.log('enter mintFunc part3')
+    console.log(`enter mintFunc part3: ${parseEther(String(nftCost))}`)
     const result1 = await contract.functions.mint(id, 1, { value: parseEther(String(nftCost)) });
     console.log(`mintFunc result1: ${result1}`)
     return result1;
