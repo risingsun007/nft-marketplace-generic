@@ -34,12 +34,7 @@ radial-gradient(
 export const Container = styled.div`
     z-index: 222233;
     position: absolute;
-    background: radial-gradient(
-      circle,
-      rgba(10, 10, 10, 0.4) 20%,
-      black 10%,
-      rgba(255, 255, 255, .0) 70%
-    );
+    background: black;
     width: 33%;
     height: 33%;
     top: 50%;
