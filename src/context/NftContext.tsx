@@ -31,7 +31,9 @@ export function NftProvider<React>({ children }: any) {
     if (!web3ReactHook.active) {
       await web3ReactHook.activate(injectedConnector)
     }
+    console.log('enter mintFunc part1')
     const signer = await web3ReactHook.library?.getSigner();
+    console.log('enter mintFunc part2')
     const windowEthereum = window as unknown as WindowEthereum;
     const contract = new Contract(process.env.REACT_APP_CONTRACT_ADDRESS as any, abi as any, signer);
     console.log(`${windowEthereum.ethereum.network}`)
@@ -42,6 +44,7 @@ export function NftProvider<React>({ children }: any) {
         params: [{ "chainId": "0x5" }]
       });
     }
+    console.log('enter mintFunc part3')
     const result1 = await contract.functions.mint(id, 1, { value: parseEther(String(nftCost)) });
     console.log(`mintFunc result1: ${result1}`)
     return result1;
