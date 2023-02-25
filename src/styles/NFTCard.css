@@ -29,7 +29,7 @@
 }
 
 .card{
-    animation:cardHoverAnimation 1s;
+    animation:cardHoverAnimation 2s;
     /* animation-iteration-count: infinite; */
     
     

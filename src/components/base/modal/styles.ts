@@ -22,11 +22,24 @@ export const ModalOverlay = styled.div<ModalOverlayProps>`
     bottom: 0;
     background: rgba(200, 200, 200,0.2);
 `;
+/*
+radial-gradient(
+  circle,
+  rgba(255, 255, 255, 0.05) 0%,
+  ${blurColor} 0%,
+  rgba(255, 255, 255, 0.05) 70%
+)
+*/
 
 export const Container = styled.div`
     z-index: 222233;
     position: absolute;
-    background: rgb(10,10,10);
+    background: radial-gradient(
+      circle,
+      rgba(10, 10, 10, 0.4) 20%,
+      black 10%,
+      rgba(255, 255, 255, .0) 70%
+    );
     width: 33%;
     height: 33%;
     top: 50%;
