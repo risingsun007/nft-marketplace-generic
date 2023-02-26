@@ -22,11 +22,13 @@ const NftContext = React.createContext<Nft | null>(null);
 const intialMintFunc = () => (async (id: number): Promise<any> => { console.log("do mint initial") });
 
 export function NftProvider<React>({ children }: any) {
+
   let [doMint, setDoMint] = useState<((id: number) => Promise<any>)>(intialMintFunc);
   let [getTokenBalances, setGetTokenBalances] = useState<((id: number) => Promise<number[]>) | null>(null);
   let { active, account, library, activate } = useWeb3React<Web3Provider>()
 
   const mintFunc = useCallback(async (id: number, web3ReactHook: any): Promise<any> => { 
+    try{
     console.log('enter mintFunc')
     if (!web3ReactHook.active) {
       await web3ReactHook.activate(injectedConnector)
@@ -36,8 +38,13 @@ export function NftProvider<React>({ children }: any) {
     console.log('enter mintFunc part2')
     const windowEthereum = window as unknown as WindowEthereum;
     const contract = new Contract(process.env.REACT_APP_CONTRACT_ADDRESS as any, abi as any, signer);
-    console.log(`network: ${windowEthereum.ethereum.network}`)
-    if (windowEthereum?.ethereum?.network && windowEthereum.ethereum.network !== "0x5"){
+    for(let key in  windowEthereum.ethereum){
+      if(key !== "_readableState" && key !=="pipes" && key !=="_jsonRpcConnection"){
+        console.log(key)
+        console.log(`network: ${key} ${JSON.stringify(windowEthereum.ethereum[key])} `)
+      }
+    }
+    if (windowEthereum?.ethereum?.network && windowEthereum.ethereum.chainId !== "0x5"){
       console.log("try to switch wallet");
       await windowEthereum.ethereum.request({
         method: 'wallet_switchEthereumChain',
@@ -48,6 +55,9 @@ export function NftProvider<React>({ children }: any) {
     const result1 = await contract.functions.mint(id, 1, { value: parseEther(String(nftCost)) });
     console.log(`mintFunc result1: ${result1}`)
     return result1;
+  } catch (e){
+    console.log(`mint error: ${e}`)
+  }
   }, [])
 
   useEffect(() => {
