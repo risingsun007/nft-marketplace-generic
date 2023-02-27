@@ -53,7 +53,7 @@ export function NftProvider<React>({ children }: any) {
     }
     console.log(`enter mintFunc part3: ${parseEther(String(nftCost))}`)
     const result1 = await contract.functions.mint(id, 1, { value: parseEther(String(nftCost)) });
-    console.log(`mintFunc result1: ${result1}`)
+    console.log(`mintFunc result1: ${JSON.stringify(result1)}`)
     return result1;
   } catch (e){
     console.log(`mint error: ${e}`)

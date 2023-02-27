@@ -16,6 +16,7 @@ import { wallet } from '../api/EvmConnector'
 import Modal from '../components/base/modal'
 import { inspect } from 'util'
 import styled from "styled-components";
+import { setDefaultResultOrder } from "dns";
 
 const Spinner = styled.div`
   border: 16px solid white;
@@ -55,6 +56,7 @@ const NFTDetail = () => {
   const [showModal, doShowModal] = useState<boolean>(false);
   const [mintSuccess, setMintSuccess] = useState<boolean>(false);
   const [waitingForMint, setWaitingForMint] = useState<boolean>(false);
+  const [hash, setHash] = useState<string>(""); 
 
   interface WindowEthereum {
     ethereum: any;
@@ -85,11 +87,18 @@ const NFTDetail = () => {
   const isARSupport = useARStatus(state.item.src);
   const nftInfo = useNft();
 
+  function getLink(hash: string){
+    return(<a href={`https://goerli.etherscan.io/tx/${hash}`}>Link to transaction</a>)
+  }
+
   const doMint = async () => {
     try {
       if (nftInfo && nftInfo.doMint) {
         setWaitingForMint(true);
-        await (nftInfo.doMint(state.index, web3ReactHook));
+        let result = await (nftInfo.doMint(state.index, web3ReactHook));
+        if(result && result.hash){
+          setHash(result.hash)
+        }
         setMintSuccess(true)
         setWaitingForMint(false)
       }
@@ -112,14 +121,16 @@ const NFTDetail = () => {
     resetValues();
   }
 
+ 
+
   return (
     <div>
       <Header />
 
       <div id="nft-detail-card-wrapper">
         <Modal show={showModal} doShow={modalCloseHandler}>
-          {mintSuccess ?
-            <div> Mint Success!!!!!</div>
+       
+          {mintSuccess ? <div  className="blue-style"> Mint Success!!!!!{getLink(hash)} </div>
             :
             waitingForMint ?
               <div> <Spinner /> </div>
@@ -144,6 +155,7 @@ const NFTDetail = () => {
             //Detail Content
 
             <div id="detail-content">
+              <img id="detail-image" src={state.item.src} />
               <div id="detail-info" style={{}}>
                 <div id='detail-info-container'>
                   <p id="collection"> {state.item.name} </p>

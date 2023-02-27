@@ -118,6 +118,19 @@ p#description{
     align-items: center;
 }
 
+.blue-style a:link{
+    color:blue;
+    font-size:18px;
+}
+
+.blue-style{
+    color: white;
+    font-size:18px;
+}
+
+
+
+
 
 .like{
     /* width: 30px; */
