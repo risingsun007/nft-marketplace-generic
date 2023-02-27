@@ -7,6 +7,7 @@ import "../styles/NFTDetail.css";
 import Button from "../components/base/Button";
 import { FaEthereum } from "react-icons/fa";
 import { AiOutlineHeart, AiFillHeart, AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import { BiArrowBack } from "react-icons/bi";
 import { useMobile } from "../hooks/isMobile";
 import { useARStatus } from "../hooks/isARStatus";
 import useNft from "../hooks/useNft";
@@ -88,7 +89,7 @@ const NFTDetail = () => {
   const nftInfo = useNft();
 
   function getLink(hash: string){
-    return(<a href={`https://goerli.etherscan.io/tx/${hash}`}>Link to transaction</a>)
+    return(<a href={`https://goerli.etherscan.io/tx/${hash}`}>Transaction</a>)
   }
 
   const doMint = async () => {
@@ -129,8 +130,11 @@ const NFTDetail = () => {
 
       <div id="nft-detail-card-wrapper">
         <Modal show={showModal} doShow={modalCloseHandler}>
-       
-          {mintSuccess ? <div  className="blue-style"> Mint Success!!!!!{getLink(hash)} </div>
+          <div style={{display: "flex", flexDirection: "column"}}>
+          {mintSuccess ? <div style={{display: "flex", flexDirection: "column"}}> 
+            <div  className="blue-style"> Mint Success!!!!!</div> 
+          <div className="blue-style"> {getLink(hash)} </div>
+           </div>
             :
             waitingForMint ?
               <div> <Spinner /> </div>
@@ -146,7 +150,9 @@ const NFTDetail = () => {
                   </div>
                 }></Button>
           }
+          </div>
         </Modal>
+        
         <Card
           width={isMobile ? "100%" : "65vw"}
           height={isMobile ? "700px" : "60vh"}
@@ -155,6 +161,7 @@ const NFTDetail = () => {
             //Detail Content
 
             <div id="detail-content">
+              <BiArrowBack style={{"color": "white", "fontSize": "30px", "padding": "2px"}} onClick={() => {window.history.go(-1); return}}/>
               <img id="detail-image" src={state.item.src} />
               <div id="detail-info" style={{}}>
                 <div id='detail-info-container'>

@@ -35,6 +35,28 @@ export const Container = styled.div`
     z-index: 222233;
     position: absolute;
     background: black;
+    width: 90%;
+    height: 83%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    padding: 0.75rem;
+    border-size: 2px;
+    border-color: grey;
+    color: rgba(0,0,0, 0);
+`;
+
+export const SuperContainer = styled.div`
+    z-index: 222233;
+    position: absolute;
+    background: radial-gradient(
+        circle,
+        rgba(30, 30, 30, .4) 100%,
+        blue 0%,
+        rgba(50, 60, 70, 1) 100%
+      );
+      box-shadow: rgba(0, 0, 0, .2) 10px 10px 10px 10px;
     width: 33%;
     height: 33%;
     top: 50%;
