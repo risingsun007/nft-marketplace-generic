@@ -132,7 +132,7 @@ const NFTDetail = () => {
         <Modal show={showModal} doShow={modalCloseHandler}>
           <div style={{display: "flex", flexDirection: "column"}}>
           {mintSuccess ? <div style={{display: "flex", flexDirection: "column"}}> 
-            <div  className="blue-style"> Mint Success!!!!!</div> 
+            <div  className="blue-style"> Mint Success.  You bought {state.item.name} for {nftInfo?.nftCost} ETH. </div> 
           <div className="blue-style"> {getLink(hash)} </div>
            </div>
             :

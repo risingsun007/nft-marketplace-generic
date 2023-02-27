@@ -119,8 +119,8 @@ p#description{
 }
 
 .blue-style a:link{
-    color:blue;
-    font-size:18px;
+    color: #1DA1F2;
+    font-size: 18px;
     justify-content: right;
     margin: 0px;
     padding: 0px;
@@ -130,6 +130,7 @@ p#description{
     color: white;
     font-size:18px;
     justify-content: left;
+    padding-bottom: 20px;
 }
 
 
